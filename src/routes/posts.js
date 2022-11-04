@@ -1,27 +1,18 @@
 const express = require('express');
+const { getPosts, getPost, savePost, deletePost } = require('../controllers/posts');
 
 const router = express.Router();
 
 // Obtener todos los posts
-router.route('/posts').get((_req, res) => {
-    
-});
+router.get('/', getPosts);
 
 // Obtener post por id
-router.route('/posts/:id').get((_req, res) => {
-    
-});
+router.get('/:id', getPost);
 
 // Guardar posts
-router.route('/posts').post((_req, res) => {
-    
-});
+router.post('/', savePost);
 
 // Borrar post por id
-router.route('/posts/:id').delete((_req, res) => {
-    
-});
+router.delete('/:id', deletePost);
 
-module.exports = {
-    router
-};
+module.exports = router;
