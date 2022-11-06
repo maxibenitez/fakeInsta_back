@@ -1,27 +1,15 @@
 const express = require('express');
+const { getImages, getImage, addImage } = require('../controllers/images');
 
 const router = express.Router();
 
 // Obtener todas las imagenes
-router.route('/images').get((_req, res) => {
-    
-});
+router.get('/', getImages);
 
 // Obtener imagenes por id
-router.route('/images/:id').get((_req, res) => {
-    
-});
+router.get('/:id', getImage);
 
 // Guardar imagenes
-router.route('/images').post((_req, res) => {
-    
-});
+router.post('/', addImage);
 
-// Borrar imagenes por id
-router.route('/images/:id').delete((_req, res) => {
-    
-});
-
-module.exports = {
-    router
-};
+module.exports = router;

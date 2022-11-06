@@ -1,16 +1,16 @@
 const { response } = require('express');
-const Post = require('../models/Post');
+const Image = require('../models/Image');
 
-const getPosts = async(req, res = response) => {
+const getImages = async(req, res = response) => {
 
     try{
-        const post = await Post.find({});
-        console.log(post);
+        const image = await Image.find({});
+        console.log(image);
 
-        if(post){
+        if(image){
             return res.status(200).json({
                 ok: true,
-                count: post.length
+                count: image.length
             });
         }
         return res.status(400).json({
@@ -27,23 +27,23 @@ const getPosts = async(req, res = response) => {
 
 }
 
-const getPost = async(req, res = response) => {
+const getImage = async(req, res = response) => {
     
     const { _id } = req.body;
 
     try{
-        const post = await Post.findOne({_id});
-        console.log(post);
+        const image = await Image.findOne({_id});
+        console.log(image);
 
-        if(post){
+        if(image){
             return res.status(200).json({
                 ok: true,
-                uid: post.id
+                uid: image.id
             });
         }
         return res.status(404).json({
             ok: false,
-            msg: 'No se encontró ningún post con ese id'
+            msg: 'No se encontró ninguna imagen con ese id'
         });
         
     }catch(error){
@@ -55,34 +55,44 @@ const getPost = async(req, res = response) => {
 
 }
 
-const addPost = async(req, res = response) => {
+const addImage = async(req, res = response) => {
 
-    const { userId, imageId } = req.body;
+    const { _id, src, description } = req.body;
 
     try{
+        const image = await Image.findOne({_id});
 
-        const dbPost = new Post({
-            userId: userId,
-            imageId: imageId
+        if(image){
+            return res.status(400).json({
+                ok: false,
+                msg: 'Ya existe una imagen con este id'
+            });
+        }
+
+        const dbImage = new Image({
+            _id: _id,
+            src: src,
+            description: description
         });
 
-        await dbPost.save();
+        await dbImage.save();
 
         return res.status(201).json({
             ok: true,
-            uid: dbPost.id
+            uid: dbImage._id
         });
-
+        
     }catch(error){
         return res.status(500).json({
             ok: false,
             msg: 'Ha ocurrido un problema'
         });
     }
+    
 }
 
 module.exports = {
-    getPosts,
-    getPost,
-    addPost
+    getImages,
+    getImage,
+    addImage
 }

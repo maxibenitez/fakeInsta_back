@@ -1,17 +1,15 @@
 const express = require('express');
+const { getUsers, getUser, addUser } = require('../controllers/users');
 
 const router = express.Router();
 
 // Obtener todos los usuarios
-router.route('/users').get((_req, res) => {
-    
-});
+router.get('/', getUsers);
 
 // Obtener usuario por id
-router.route('/users/:id').get((_req, res) => {
-    
-});
+router.get('/:id', getUser);
 
-module.exports = {
-    router
-};
+// Guardar usuario
+router.post('/', addUser);
+
+module.exports = router;

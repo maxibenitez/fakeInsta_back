@@ -1,5 +1,5 @@
 const express = require('express');
-const { getPosts, getPost, savePost, deletePost } = require('../controllers/posts');
+const { getPosts, getPost, addPost } = require('../controllers/posts');
 
 const router = express.Router();
 
@@ -10,9 +10,6 @@ router.get('/', getPosts);
 router.get('/:id', getPost);
 
 // Guardar posts
-router.post('/', savePost);
-
-// Borrar post por id
-router.delete('/:id', deletePost);
+router.post('/', addPost);
 
 module.exports = router;
