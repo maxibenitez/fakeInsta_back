@@ -4,72 +4,48 @@ const User = require('../models/User');
 const getUsers = async(req, res = response) => {
 
     try{
-        const user = await User.find({});
-        console.log(user);
+        const user = await User.find();
 
         if(user){
-            return res.status(200).json({
-                ok: true,
-                count: user.length
-            });
+            return res.status(200).json(user);
         }
-        return res.status(400).json({
-            ok: false,
-            msg: 'No se pudo procesar su solicitud'
-        });
+        return res.status(400).send('No se pudo procesar su solicitud');
         
     }catch(error){
-        return res.status(500).json({
-            ok: false,
-            msg: 'Ha ocurrido un problema'
-        });
+        return res.status(500).send('Ha ocurrido un problema');
     }
     
 }
 
 const getUser = async(req, res = response) => {
-    
-    const { _id } = req.body;
 
     try{
-        const user = await User.findOne({_id});
-        console.log(user);
+        const user = await User.findOne({_id: req.params.id});
 
         if(user){
-            return res.status(200).json({
-                ok: true,
-                username: user.username
-            });
+            return res.status(200).json(user);
         }
-        return res.status(404).json({
-            ok: false,
-            msg: 'No se encontró ningún usuario con ese id'
-        });
+        return res.status(404).send('No se encontró ningún usuario con ese id');
         
     }catch(error){
-        return res.status(500).json({
-            ok: false,
-            msg: 'Ha ocurrido un problema'
-        });
+        return res.status(500).send('Ha ocurrido un problema');
     }
 
 }
 
 const addUser = async(req, res = response) => {
 
-    const { firstName, lastName, username, profilePic } = req.body;
+    const { _id, firstName, lastName, username, profilePic } = req.body;
 
     try{
         const user = await User.findOne({username});
 
         if(user){
-            return res.status(400).json({
-                ok: false,
-                msg: 'Ya existe un usuario con ese username'
-            });
+            return res.status(400).send('Ya existe un usuario con ese username');
         }
 
         const dbUser = new User({
+            _id: _id,
             firstName: firstName,
             lastName: lastName,
             username: username,
@@ -84,10 +60,7 @@ const addUser = async(req, res = response) => {
         });
         
     }catch(error){
-        return res.status(500).json({
-            ok: false,
-            msg: 'Ha ocurrido un problema'
-        });
+        return res.status(500).send('Ha ocurrido un problema');
     }
 }
 

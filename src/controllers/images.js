@@ -4,53 +4,31 @@ const Image = require('../models/Image');
 const getImages = async(req, res = response) => {
 
     try{
-        const image = await Image.find({});
-        console.log(image);
+        const images = await Image.find({});
 
-        if(image){
-            return res.status(200).json({
-                ok: true,
-                count: image.length
-            });
+        if(images){
+            return res.status(200).json(images);
         }
-        return res.status(400).json({
-            ok: false,
-            msg: 'No se pudo procesar su solicitud'
-        });
+        return res.status(400).send('No se pudo procesar su solicitud');
         
     }catch(error){
-        return res.status(500).json({
-            ok: false,
-            msg: 'Ha ocurrido un problema'
-        });
+        return res.status(500).send('Ha ocurrido un problema');
     }
 
 }
 
 const getImage = async(req, res = response) => {
-    
-    const { _id } = req.body;
 
     try{
-        const image = await Image.findOne({_id});
-        console.log(image);
+        const image = await Image.findOne({_id: req.params.id});
 
         if(image){
-            return res.status(200).json({
-                ok: true,
-                uid: image.id
-            });
+            return res.status(200).json(image);
         }
-        return res.status(404).json({
-            ok: false,
-            msg: 'No se encontró ninguna imagen con ese id'
-        });
+        return res.status(404).send('No se encontró ninguna imagen con ese id');
         
     }catch(error){
-        return res.status(500).json({
-            ok: false,
-            msg: 'Ha ocurrido un problema'
-        });
+        return res.status(500).send('Ha ocurrido un problema');
     }
 
 }
@@ -63,10 +41,7 @@ const addImage = async(req, res = response) => {
         const image = await Image.findOne({_id});
 
         if(image){
-            return res.status(400).json({
-                ok: false,
-                msg: 'Ya existe una imagen con este id'
-            });
+            return res.status(400).send('Ya existe una imagen con este id');
         }
 
         const dbImage = new Image({
@@ -83,10 +58,7 @@ const addImage = async(req, res = response) => {
         });
         
     }catch(error){
-        return res.status(500).json({
-            ok: false,
-            msg: 'Ha ocurrido un problema'
-        });
+        return res.status(500).send('Ha ocurrido un problema');
     }
     
 }

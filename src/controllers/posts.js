@@ -5,63 +5,43 @@ const getPosts = async(req, res = response) => {
 
     try{
         const post = await Post.find({});
-        console.log(post);
 
         if(post){
-            return res.status(200).json({
-                ok: true,
-                count: post.length
-            });
+            return res.status(200).json(post);
         }
-        return res.status(400).json({
-            ok: false,
-            msg: 'No se pudo procesar su solicitud'
-        });
+        return res.status(400).send('No se pudo procesar su solicitud');
         
     }catch(error){
-        return res.status(500).json({
-            ok: false,
-            msg: 'Ha ocurrido un problema'
-        });
+        return res.status(500).send('Ha ocurrido un problema');
     }
 
 }
 
 const getPost = async(req, res = response) => {
-    
-    const { _id } = req.body;
 
     try{
-        const post = await Post.findOne({_id});
-        console.log(post);
+        const post = await Post.findOne({_id: req.params.id});
 
         if(post){
-            return res.status(200).json({
-                ok: true,
-                uid: post.id
-            });
+            return res.status(200).json(post);
         }
-        return res.status(404).json({
-            ok: false,
-            msg: 'No se encontró ningún post con ese id'
-        });
+        return res.status(404).send('No se encontró ningún post con ese id');
         
     }catch(error){
-        return res.status(500).json({
-            ok: false,
-            msg: 'Ha ocurrido un problema'
-        });
+        return res.status(500).send('Ha ocurrido un problema');
     }
 
 }
 
 const addPost = async(req, res = response) => {
 
-    const { userId, imageId } = req.body;
+    const { _id, userId, imageId } = req.body;
+    console.log(req.body)
 
     try{
 
         const dbPost = new Post({
+            _id: _id,
             userId: userId,
             imageId: imageId
         });
@@ -74,10 +54,7 @@ const addPost = async(req, res = response) => {
         });
 
     }catch(error){
-        return res.status(500).json({
-            ok: false,
-            msg: 'Ha ocurrido un problema'
-        });
+        return res.status(500).send('Ha ocurrido un problema');
     }
 }
 
